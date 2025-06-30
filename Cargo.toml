@@ -1,0 +1,32 @@
+[package]
+name = "cc2report"
+version = "2.2.0"
+edition = "2021"
+authors = ["Signal Slot Contributors"]
+description = "Intelligent work report generator for Claude Code that analyzes conversation logs using AI"
+repository = "https://github.com/signal-slot/cc2report"
+license = "MIT"
+readme = "README.md"
+keywords = ["claude", "ai", "report", "openai", "productivity"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "cc2report"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = "0.4"
+clap = "4.0"
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
+indicatif = "0.17"
+toml = "0.8"
+futures = "0.3"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+opt-level = "z"
