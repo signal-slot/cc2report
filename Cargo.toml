@@ -2,6 +2,7 @@
 name = "cc2report"
 version = "1.0.0"
 edition = "2021"
+rust-version = "1.75"
 authors = ["Signal Slot Contributors"]
 description = "Intelligent work report generator for Claude Code that analyzes conversation logs using AI"
 repository = "https://github.com/signal-slot/cc2report"
