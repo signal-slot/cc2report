@@ -41,6 +41,12 @@ pub enum TopicOutcome {
     InProgress,
 }
 
+impl Default for ConversationFlow {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ConversationFlow {
     pub fn new() -> Self {
         Self {
@@ -419,24 +425,24 @@ fn convert_tool_use_to_human_readable(tool_name: &str, input: &serde_json::Value
     match tool_name {
         "Read" => {
             if let Some(path) = input.get("file_path").and_then(|v| v.as_str()) {
-                let filename = path.split('/').last().unwrap_or(path);
-                format!("{} を読み込み", filename)
+                let filename = path.split('/').next_back().unwrap_or(path);
+                format!("{filename} を読み込み")
             } else {
                 "ファイルを読み込み".to_string()
             }
         }
         "Write" => {
             if let Some(path) = input.get("file_path").and_then(|v| v.as_str()) {
-                let filename = path.split('/').last().unwrap_or(path);
-                format!("{} を新規作成", filename)
+                let filename = path.split('/').next_back().unwrap_or(path);
+                format!("{filename} を新規作成")
             } else {
                 "新規ファイルを作成".to_string()
             }
         }
         "Edit" | "MultiEdit" => {
             if let Some(path) = input.get("file_path").and_then(|v| v.as_str()) {
-                let filename = path.split('/').last().unwrap_or(path);
-                format!("{} を編集", filename)
+                let filename = path.split('/').next_back().unwrap_or(path);
+                format!("{filename} を編集")
             } else {
                 "ファイルを編集".to_string()
             }
@@ -469,7 +475,7 @@ fn convert_tool_use_to_human_readable(tool_name: &str, input: &serde_json::Value
                         if cmd.len() > 30 {
                             format!("{} コマンドを実行", cmd_parts.first().unwrap_or(&""))
                         } else {
-                            format!("「{}」を実行", cmd)
+                            format!("「{cmd}」を実行")
                         }
                     }
                 }
@@ -481,18 +487,18 @@ fn convert_tool_use_to_human_readable(tool_name: &str, input: &serde_json::Value
             if let Some(pattern) = input.get("pattern").and_then(|v| v.as_str()) {
                 let pattern_display = if pattern.chars().count() > 20 {
                     let truncated: String = pattern.chars().take(20).collect();
-                    format!("{}...", truncated)
+                    format!("{truncated}...")
                 } else {
                     pattern.to_string()
                 };
-                format!("「{}」を検索", pattern_display)
+                format!("「{pattern_display}」を検索")
             } else {
                 "コード内を検索".to_string()
             }
         }
         "TodoWrite" => "TODOリストを更新".to_string(),
         "TodoRead" => "TODOリストを確認".to_string(),
-        _ => format!("{} ツールを使用", tool_name),
+        _ => format!("{tool_name} ツールを使用"),
     }
 }
 
@@ -549,7 +555,7 @@ fn determine_topic_outcome(topic: &Topic) -> TopicOutcome {
     if failed_count > 0 && success_count == 0 {
         TopicOutcome::Failed("すべての作業が失敗しました".to_string())
     } else if failed_count > 0 {
-        TopicOutcome::PartiallyCompleted(format!("{}/{}の作業が完了", success_count, total_steps))
+        TopicOutcome::PartiallyCompleted(format!("{success_count}/{total_steps}の作業が完了"))
     } else if success_count == total_steps {
         TopicOutcome::Completed("すべての作業が正常に完了しました".to_string())
     } else {

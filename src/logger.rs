@@ -62,7 +62,7 @@ fn log(level: LogLevel, message: &str) {
                 LogLevel::Error => "[ERROR]",
             };
 
-            eprintln!("{} {}", prefix, message);
+            eprintln!("{prefix} {message}");
         }
     }
 }

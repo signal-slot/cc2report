@@ -235,7 +235,7 @@ pub fn analyze_logs(
                                 // Skip summary entries for now
                             }
                             Err(e) => {
-                                eprintln!("Error parsing JSON: {} in line: {}", e, line);
+                                eprintln!("Error parsing JSON: {e} in line: {line}");
                             }
                         }
                     }

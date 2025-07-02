@@ -63,7 +63,7 @@ pub async fn analyze_conversations_with_ai(
                 .replace('-', "/")
                 .replace("/home/", "~/");
 
-            pb.set_message(format!("Processing: {}", readable_name));
+            pb.set_message(format!("Processing: {readable_name}"));
 
             let mut flow = ConversationFlow::new();
 

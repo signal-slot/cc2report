@@ -23,6 +23,12 @@ pub struct TokenTracker {
     pub cost_estimate: Option<CostEstimate>,
 }
 
+impl Default for TokenTracker {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl TokenTracker {
     pub fn new() -> Self {
         Self {
@@ -78,7 +84,7 @@ impl TokenTracker {
         match lang {
             "ja" => {
                 summary.push_str("\n## トークン使用状況\n\n");
-                summary.push_str(&format!("### 総使用量\n"));
+                summary.push_str("### 総使用量\n");
                 summary.push_str(&format!(
                     "- 入力トークン: {}\n",
                     self.total_usage.prompt_tokens
@@ -121,7 +127,7 @@ impl TokenTracker {
             }
             "zh" => {
                 summary.push_str("\n## 令牌使用情况\n\n");
-                summary.push_str(&format!("### 总使用量\n"));
+                summary.push_str("### 总使用量\n");
                 summary.push_str(&format!("- 输入令牌: {}\n", self.total_usage.prompt_tokens));
                 summary.push_str(&format!(
                     "- 输出令牌: {}\n",
@@ -145,7 +151,7 @@ impl TokenTracker {
             }
             _ => {
                 summary.push_str("\n## Token Usage Summary\n\n");
-                summary.push_str(&format!("### Total Usage\n"));
+                summary.push_str("### Total Usage\n");
                 summary.push_str(&format!(
                     "- Input tokens: {}\n",
                     self.total_usage.prompt_tokens

@@ -61,7 +61,7 @@ impl ApiCache {
         messages: &[String],
     ) -> Option<AiAnalysisResponse> {
         let key = Self::get_cache_key(project_name, lang, model, messages);
-        let cache_file = self.cache_dir.join(format!("{}.json", key));
+        let cache_file = self.cache_dir.join(format!("{key}.json"));
 
         if !cache_file.exists() {
             return None;
@@ -81,19 +81,19 @@ impl ApiCache {
                                 );
                                 return Some(entry.response);
                             } else {
-                                eprintln!("Cache expired: {}", project_name);
+                                eprintln!("Cache expired: {project_name}");
                                 // Remove expired cache
                                 let _ = fs::remove_file(&cache_file);
                             }
                         }
                     }
                     Err(e) => {
-                        eprintln!("Cache read error: {}", e);
+                        eprintln!("Cache read error: {e}");
                     }
                 }
             }
             Err(e) => {
-                eprintln!("Cache file read error: {}", e);
+                eprintln!("Cache file read error: {e}");
             }
         }
 
@@ -109,7 +109,7 @@ impl ApiCache {
         response: &AiAnalysisResponse,
     ) -> Result<(), Box<dyn std::error::Error>> {
         let key = Self::get_cache_key(project_name, lang, model, messages);
-        let cache_file = self.cache_dir.join(format!("{}.json", key));
+        let cache_file = self.cache_dir.join(format!("{key}.json"));
 
         let entry = CacheEntry {
             response: response.clone(),
@@ -119,7 +119,7 @@ impl ApiCache {
         let content = serde_json::to_string_pretty(&entry)?;
         fs::write(&cache_file, content)?;
 
-        eprintln!("Saved to cache: {}", project_name);
+        eprintln!("Saved to cache: {project_name}");
         Ok(())
     }
 

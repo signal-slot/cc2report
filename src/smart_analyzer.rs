@@ -81,7 +81,7 @@ pub fn generate_smart_report(
         std::fs::write(path, output)?;
         println!("{}", get_output_message(lang, path));
     } else {
-        print!("{}", output);
+        print!("{output}");
     }
 
     Ok(())
@@ -105,32 +105,32 @@ fn generate_japanese_smart_report(output: &mut String, report: &SmartReport) {
             for activity in &project.work_breakdown.primary_activities {
                 output.push_str(&format!("- {} - {}\n", activity.category, activity.summary));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         // Outcomes
         if !project.outcomes.delivered_value.is_empty() {
             output.push_str("**成果**:\n");
             for value in &project.outcomes.delivered_value {
-                output.push_str(&format!("- {}\n", value));
+                output.push_str(&format!("- {value}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.technical_improvements.is_empty() {
             output.push_str("**技術的改善**:\n");
             for improvement in &project.outcomes.technical_improvements {
-                output.push_str(&format!("- {}\n", improvement));
+                output.push_str(&format!("- {improvement}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.unresolved_issues.is_empty() {
             output.push_str("**未解決の課題**:\n");
             for issue in &project.outcomes.unresolved_issues {
-                output.push_str(&format!("- {}\n", issue));
+                output.push_str(&format!("- {issue}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
     }
 
@@ -153,32 +153,32 @@ fn generate_english_smart_report(output: &mut String, report: &SmartReport) {
             for activity in &project.work_breakdown.primary_activities {
                 output.push_str(&format!("- {} - {}\n", activity.category, activity.summary));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         // Outcomes
         if !project.outcomes.delivered_value.is_empty() {
             output.push_str("**Delivered Value**:\n");
             for value in &project.outcomes.delivered_value {
-                output.push_str(&format!("- {}\n", value));
+                output.push_str(&format!("- {value}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.technical_improvements.is_empty() {
             output.push_str("**Technical Improvements**:\n");
             for improvement in &project.outcomes.technical_improvements {
-                output.push_str(&format!("- {}\n", improvement));
+                output.push_str(&format!("- {improvement}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.unresolved_issues.is_empty() {
             output.push_str("**Unresolved Issues**:\n");
             for issue in &project.outcomes.unresolved_issues {
-                output.push_str(&format!("- {}\n", issue));
+                output.push_str(&format!("- {issue}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
     }
 
@@ -200,31 +200,31 @@ fn generate_chinese_smart_report(output: &mut String, report: &SmartReport) {
             for activity in &project.work_breakdown.primary_activities {
                 output.push_str(&format!("- {} - {}\n", activity.category, activity.summary));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.delivered_value.is_empty() {
             output.push_str("**交付价值**:\n");
             for value in &project.outcomes.delivered_value {
-                output.push_str(&format!("- {}\n", value));
+                output.push_str(&format!("- {value}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.technical_improvements.is_empty() {
             output.push_str("**技术改进**:\n");
             for improvement in &project.outcomes.technical_improvements {
-                output.push_str(&format!("- {}\n", improvement));
+                output.push_str(&format!("- {improvement}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.unresolved_issues.is_empty() {
             output.push_str("**未解决的问题**:\n");
             for issue in &project.outcomes.unresolved_issues {
-                output.push_str(&format!("- {}\n", issue));
+                output.push_str(&format!("- {issue}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
     }
 
@@ -246,31 +246,31 @@ fn generate_korean_smart_report(output: &mut String, report: &SmartReport) {
             for activity in &project.work_breakdown.primary_activities {
                 output.push_str(&format!("- {} - {}\n", activity.category, activity.summary));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.delivered_value.is_empty() {
             output.push_str("**제공된 가치**:\n");
             for value in &project.outcomes.delivered_value {
-                output.push_str(&format!("- {}\n", value));
+                output.push_str(&format!("- {value}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.technical_improvements.is_empty() {
             output.push_str("**기술적 개선사항**:\n");
             for improvement in &project.outcomes.technical_improvements {
-                output.push_str(&format!("- {}\n", improvement));
+                output.push_str(&format!("- {improvement}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.unresolved_issues.is_empty() {
             output.push_str("**미해결 문제**:\n");
             for issue in &project.outcomes.unresolved_issues {
-                output.push_str(&format!("- {}\n", issue));
+                output.push_str(&format!("- {issue}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
     }
 
@@ -292,31 +292,31 @@ fn generate_spanish_smart_report(output: &mut String, report: &SmartReport) {
             for activity in &project.work_breakdown.primary_activities {
                 output.push_str(&format!("- {} - {}\n", activity.category, activity.summary));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.delivered_value.is_empty() {
             output.push_str("**Valor entregado**:\n");
             for value in &project.outcomes.delivered_value {
-                output.push_str(&format!("- {}\n", value));
+                output.push_str(&format!("- {value}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.technical_improvements.is_empty() {
             output.push_str("**Mejoras técnicas**:\n");
             for improvement in &project.outcomes.technical_improvements {
-                output.push_str(&format!("- {}\n", improvement));
+                output.push_str(&format!("- {improvement}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.unresolved_issues.is_empty() {
             output.push_str("**Problemas no resueltos**:\n");
             for issue in &project.outcomes.unresolved_issues {
-                output.push_str(&format!("- {}\n", issue));
+                output.push_str(&format!("- {issue}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
     }
 
@@ -338,31 +338,31 @@ fn generate_french_smart_report(output: &mut String, report: &SmartReport) {
             for activity in &project.work_breakdown.primary_activities {
                 output.push_str(&format!("- {} - {}\n", activity.category, activity.summary));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.delivered_value.is_empty() {
             output.push_str("**Valeur livrée**:\n");
             for value in &project.outcomes.delivered_value {
-                output.push_str(&format!("- {}\n", value));
+                output.push_str(&format!("- {value}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.technical_improvements.is_empty() {
             output.push_str("**Améliorations techniques**:\n");
             for improvement in &project.outcomes.technical_improvements {
-                output.push_str(&format!("- {}\n", improvement));
+                output.push_str(&format!("- {improvement}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
 
         if !project.outcomes.unresolved_issues.is_empty() {
             output.push_str("**Problèmes non résolus**:\n");
             for issue in &project.outcomes.unresolved_issues {
-                output.push_str(&format!("- {}\n", issue));
+                output.push_str(&format!("- {issue}\n"));
             }
-            output.push_str("\n");
+            output.push('\n');
         }
     }
 

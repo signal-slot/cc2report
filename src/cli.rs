@@ -3,7 +3,7 @@ use clap::{Arg, Command};
 /// Build the command line interface
 pub fn build_cli() -> Command {
     Command::new("cc2report")
-        .version("2.1.0")
+        .version("1.0.0")
         .author("Claude Code Log Analyzer")
         .about("Generate intelligent work reports from Claude Code project logs\n\nBy default, generates a report for today's conversations.")
         .arg(

@@ -70,6 +70,7 @@ pub enum ResolutionStatus {
     Blocked,
 }
 
+#[allow(clippy::too_many_arguments)]
 pub async fn create_intelligent_summary(
     projects: HashMap<String, Vec<Topic>>,
     date_str: String,
@@ -117,8 +118,7 @@ pub async fn create_intelligent_summary(
         for (project_name, topics) in &projects {
             if !processed_projects.contains(project_name) {
                 eprintln!(
-                    "Using fallback analysis for project '{}' after AI analysis failed",
-                    project_name
+                    "Using fallback analysis for project '{project_name}' after AI analysis failed"
                 );
                 let summary = analyze_project_intelligently(project_name, topics);
                 project_summaries.push(summary);
@@ -141,8 +141,7 @@ pub async fn create_intelligent_summary(
 
     if failed_count > 0 {
         overall_insights.push_str(&format!(
-            " Note: {} project(s) failed to analyze.",
-            failed_count
+            " Note: {failed_count} project(s) failed to analyze."
         ));
     }
 
@@ -263,8 +262,7 @@ fn detect_main_theme(topics: &[Topic]) -> String {
 
 fn format_project_name(name: &str) -> String {
     // Convert technical names to readable format
-    name.replace('-', " ")
-        .replace('_', " ")
+    name.replace(['-', '_'], " ")
         .split_whitespace()
         .map(|word| {
             if word.len() <= 3 && word.chars().all(|c| c.is_alphabetic()) {
@@ -288,10 +286,7 @@ fn group_activities_intelligently(topics: &[Topic]) -> Vec<Activity> {
     // Group by semantic similarity, not keywords
     for topic in topics {
         let group = determine_semantic_group(topic);
-        activity_groups
-            .entry(group)
-            .or_insert_with(Vec::new)
-            .push(topic);
+        activity_groups.entry(group).or_default().push(topic);
     }
 
     // Convert groups to activities
@@ -375,7 +370,7 @@ fn create_activity_description(category: &str, count: usize) -> String {
     if count == 1 {
         category.to_string()
     } else {
-        format!("{} ({} tasks)", category, count)
+        format!("{category} ({count} tasks)")
     }
 }
 

@@ -47,7 +47,7 @@ async fn run() -> Result<()> {
 fn handle_template_generation(template_path: &str) -> Result<()> {
     let path = PathBuf::from(template_path);
     templates::create_default_template_file(&path)
-        .map_err(|e| AppError::Config(format!("Template generation failed: {}", e)))?;
+        .map_err(|e| AppError::Config(format!("Template generation failed: {e}")))?;
 
     println!("Template file generated: {}", path.display());
     println!("Edit this file to customize AI prompts and report formats.");
@@ -56,11 +56,11 @@ fn handle_template_generation(template_path: &str) -> Result<()> {
 
 fn handle_cache_clear() -> Result<()> {
     let cache = cache::ApiCache::new()
-        .map_err(|e| AppError::Cache(format!("Cache initialization failed: {}", e)))?;
+        .map_err(|e| AppError::Cache(format!("Cache initialization failed: {e}")))?;
 
     cache
         .clear()
-        .map_err(|e| AppError::Cache(format!("Cache clear failed: {}", e)))?;
+        .map_err(|e| AppError::Cache(format!("Cache clear failed: {e}")))?;
 
     println!("API response cache cleared.");
     Ok(())
@@ -68,14 +68,14 @@ fn handle_cache_clear() -> Result<()> {
 
 fn handle_cache_info() -> Result<()> {
     let cache = cache::ApiCache::new()
-        .map_err(|e| AppError::Cache(format!("Cache initialization failed: {}", e)))?;
+        .map_err(|e| AppError::Cache(format!("Cache initialization failed: {e}")))?;
 
     let size = cache
         .size()
-        .map_err(|e| AppError::Cache(format!("Failed to get cache size: {}", e)))?;
+        .map_err(|e| AppError::Cache(format!("Failed to get cache size: {e}")))?;
 
     let size_mb = size as f64 / 1_048_576.0;
-    println!("Cache size: {:.2} MB", size_mb);
+    println!("Cache size: {size_mb:.2} MB");
     Ok(())
 }
 
@@ -84,16 +84,16 @@ fn parse_date_filter(
 ) -> Result<Option<(Option<NaiveDate>, Option<NaiveDate>)>> {
     if let Some(date_str) = matches.get_one::<String>("date") {
         let date = NaiveDate::parse_from_str(date_str, "%Y-%m-%d")
-            .map_err(|e| AppError::Config(format!("Invalid date format: {}", e)))?;
+            .map_err(|e| AppError::Config(format!("Invalid date format: {e}")))?;
         Ok(Some((Some(date), Some(date))))
     } else if let (Some(from_str), Some(to_str)) = (
         matches.get_one::<String>("from"),
         matches.get_one::<String>("to"),
     ) {
         let from_date = NaiveDate::parse_from_str(from_str, "%Y-%m-%d")
-            .map_err(|e| AppError::Config(format!("Invalid from date: {}", e)))?;
+            .map_err(|e| AppError::Config(format!("Invalid from date: {e}")))?;
         let to_date = NaiveDate::parse_from_str(to_str, "%Y-%m-%d")
-            .map_err(|e| AppError::Config(format!("Invalid to date: {}", e)))?;
+            .map_err(|e| AppError::Config(format!("Invalid to date: {e}")))?;
         Ok(Some((Some(from_date), Some(to_date))))
     } else if matches.get_flag("weekly") {
         let today = chrono::Local::now().naive_local().date();
@@ -146,7 +146,7 @@ async fn run_analysis(
         config.processing.parallel_requests,
     )
     .await
-    .map_err(|e| AppError::Processing(format!("Analysis failed: {}", e)))?;
+    .map_err(|e| AppError::Processing(format!("Analysis failed: {e}")))?;
 
     // Handle token tracking display
     if !config.output.show_token_usage {
@@ -158,14 +158,13 @@ async fn run_analysis(
 
     match config.output.format {
         OutputFormat::Json => {
-            let json_output =
-                serde_json::to_string_pretty(&report).map_err(|e| AppError::Json(e))?;
+            let json_output = serde_json::to_string_pretty(&report).map_err(AppError::Json)?;
 
             if let Some(path) = output_path.as_deref() {
-                std::fs::write(path, json_output).map_err(|e| AppError::Io(e))?;
+                std::fs::write(path, json_output).map_err(AppError::Io)?;
                 logger::info(&format!("Report written to: {}", path.display()));
             } else {
-                println!("{}", json_output);
+                println!("{json_output}");
             }
         }
         OutputFormat::Markdown => {
@@ -174,7 +173,7 @@ async fn run_analysis(
                 output_path.as_deref(),
                 &config.output.language,
             )
-            .map_err(|e| AppError::Processing(format!("Report generation failed: {}", e)))?;
+            .map_err(|e| AppError::Processing(format!("Report generation failed: {e}")))?;
         }
     }
 

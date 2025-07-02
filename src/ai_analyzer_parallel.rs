@@ -23,10 +23,7 @@ pub async fn analyze_with_ai_parallel(
     let cache = match ApiCache::new() {
         Ok(c) => Some(Arc::new(c)),
         Err(e) => {
-            eprintln!(
-                "Cache initialization error: {}. Continuing without cache.",
-                e
-            );
+            eprintln!("Cache initialization error: {e}. Continuing without cache.");
             None
         }
     };
@@ -36,7 +33,7 @@ pub async fn analyze_with_ai_parallel(
         match Templates::load_from_file(&template_path) {
             Ok(t) => Templates::merge_with_defaults(Some(t)),
             Err(e) => {
-                eprintln!("Template loading error: {}. Using defaults.", e);
+                eprintln!("Template loading error: {e}. Using defaults.");
                 Templates::default()
             }
         }
@@ -156,7 +153,7 @@ pub async fn analyze_with_ai_parallel(
 
                 match client
                     .post("https://api.openai.com/v1/chat/completions")
-                    .header("Authorization", format!("Bearer {}", api_key))
+                    .header("Authorization", format!("Bearer {api_key}"))
                     .header("Content-Type", "application/json")
                     .json(&request_body)
                     .send()
@@ -230,7 +227,7 @@ pub async fn analyze_with_ai_parallel(
                                                         &cache_key_messages,
                                                         &analysis,
                                                     ) {
-                                                        eprintln!("Cache save error: {}", e);
+                                                        eprintln!("Cache save error: {e}");
                                                     }
                                                 }
 
@@ -244,7 +241,7 @@ pub async fn analyze_with_ai_parallel(
                                                     "JSON parsing error for project '{}': {}",
                                                     conv.project_name, e
                                                 );
-                                                eprintln!("Invalid JSON: {}", cleaned_content);
+                                                eprintln!("Invalid JSON: {cleaned_content}");
                                             }
                                         }
                                     } else {

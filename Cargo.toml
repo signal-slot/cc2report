@@ -1,6 +1,6 @@
 [package]
 name = "cc2report"
-version = "2.2.0"
+version = "1.0.0"
 edition = "2021"
 authors = ["Signal Slot Contributors"]
 description = "Intelligent work report generator for Claude Code that analyzes conversation logs using AI"

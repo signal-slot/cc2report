@@ -46,13 +46,13 @@ pub enum ApiError {
 impl fmt::Display for AppError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            AppError::Config(msg) => write!(f, "Configuration error: {}", msg),
-            AppError::Api(err) => write!(f, "API error: {}", err),
-            AppError::Io(err) => write!(f, "IO error: {}", err),
-            AppError::Json(err) => write!(f, "JSON parsing error: {}", err),
-            AppError::Cache(msg) => write!(f, "Cache error: {}", msg),
-            AppError::Processing(msg) => write!(f, "Processing error: {}", msg),
-            AppError::Other(err) => write!(f, "Error: {}", err),
+            AppError::Config(msg) => write!(f, "Configuration error: {msg}"),
+            AppError::Api(err) => write!(f, "API error: {err}"),
+            AppError::Io(err) => write!(f, "IO error: {err}"),
+            AppError::Json(err) => write!(f, "JSON parsing error: {err}"),
+            AppError::Cache(msg) => write!(f, "Cache error: {msg}"),
+            AppError::Processing(msg) => write!(f, "Processing error: {msg}"),
+            AppError::Other(err) => write!(f, "Error: {err}"),
         }
     }
 }
@@ -64,16 +64,16 @@ impl fmt::Display for ApiError {
                 write!(f, "OpenAI API key is required. Set OPENAI_API_KEY environment variable or use --api-key option.")
             }
             ApiError::RequestFailed { status, message } => {
-                write!(f, "API request failed with status {}: {}", status, message)
+                write!(f, "API request failed with status {status}: {message}")
             }
             ApiError::RateLimitExceeded => {
                 write!(f, "API rate limit exceeded. Please wait before retrying.")
             }
             ApiError::InvalidResponse(msg) => {
-                write!(f, "Invalid API response: {}", msg)
+                write!(f, "Invalid API response: {msg}")
             }
             ApiError::Network(msg) => {
-                write!(f, "Network error: {}", msg)
+                write!(f, "Network error: {msg}")
             }
         }
     }
