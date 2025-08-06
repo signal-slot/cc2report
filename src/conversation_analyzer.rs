@@ -139,6 +139,12 @@ fn summarize_intent(content: &str) -> String {
     }
 }
 
+fn find_char_position(haystack: &str, needle: &str) -> Option<usize> {
+    haystack
+        .find(needle)
+        .map(|byte_pos| haystack[..byte_pos].chars().count())
+}
+
 fn generate_topic_title(intent: &str) -> String {
     // 意図から簡潔なタイトルを生成
     let intent_lower = intent.to_lowercase();
@@ -188,15 +194,19 @@ fn generate_topic_title(intent: &str) -> String {
 
     for action in &action_words {
         if intent_lower.contains(action) {
-            // 動詞の前後の文脈を含める
-            if let Some(pos) = intent_lower.find(action) {
-                let start = pos.saturating_sub(10);
-                let end = (pos + action.len() + 30).min(intent.len());
-                let context = &intent[start..end];
+            // 動詞の前後の文脈を含める - 文字単位で安全に処理
+            if let Some(char_pos) = find_char_position(&intent_lower, action) {
+                let intent_chars: Vec<char> = intent.chars().collect();
+                let char_start = char_pos.saturating_sub(10);
+                let char_end = (char_pos + action.chars().count() + 30).min(intent_chars.len());
+                let context: String = intent_chars[char_start..char_end].iter().collect();
 
                 // 文の境界で切る
                 if let Some(sentence_end) = context.find(&['.', '!', '?'][..]) {
-                    return context[..sentence_end].trim().to_string();
+                    let context_chars: Vec<char> = context.chars().collect();
+                    let end_char_pos = context.chars().take(sentence_end).count();
+                    let truncated: String = context_chars[..end_char_pos].iter().collect();
+                    return truncated.trim().to_string();
                 }
                 return context.trim().to_string();
             }

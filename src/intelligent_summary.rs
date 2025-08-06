@@ -460,7 +460,10 @@ fn simplify_intent(intent: &str) -> String {
 fn summarize_actions(actions: &[&str]) -> String {
     let unique_actions: std::collections::HashSet<_> = actions.iter().cloned().collect();
     if unique_actions.len() == 1 {
-        actions[0].to_lowercase()
+        actions
+            .first()
+            .map(|action| action.to_lowercase())
+            .unwrap_or_else(|| "unknown action".to_string())
     } else {
         format!("{} actions", unique_actions.len())
     }

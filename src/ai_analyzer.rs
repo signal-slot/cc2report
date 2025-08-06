@@ -176,8 +176,13 @@ pub async fn analyze_with_ai(
                 if response.status().is_success() {
                     match response.json::<serde_json::Value>().await {
                         Ok(api_response) => {
-                            if let Some(content) =
-                                api_response["choices"][0]["message"]["content"].as_str()
+                            if let Some(content) = api_response
+                                .get("choices")
+                                .and_then(|choices| choices.as_array())
+                                .and_then(|arr| arr.first())
+                                .and_then(|choice| choice.get("message"))
+                                .and_then(|message| message.get("content"))
+                                .and_then(|content| content.as_str())
                             {
                                 // Remove markdown code blocks if present
                                 let cleaned_content = if content.starts_with("```json")

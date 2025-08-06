@@ -107,7 +107,10 @@ pub fn analyze_logs(
         let path = entry.path();
 
         if path.is_dir() {
-            let project_name = path.file_name().unwrap().to_string_lossy().to_string();
+            let project_name = path
+                .file_name()
+                .map(|name| name.to_string_lossy().to_string())
+                .unwrap_or_else(|| "unknown-project".to_string());
 
             // Process all JSONL files in the project directory
             for jsonl_entry in std::fs::read_dir(&path)? {
